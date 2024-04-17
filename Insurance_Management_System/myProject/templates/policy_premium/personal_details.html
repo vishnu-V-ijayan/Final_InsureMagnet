@@ -1,0 +1,256 @@
+{% extends "policy_premium/base.html" %}
+
+
+{% block style %}
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  header {
+    background-color: #008080;
+    color: #fff;
+    text-align: center;
+    padding: 1em;
+  }
+
+  main {
+    max-width: 800px;
+    margin: 20px auto;
+  }
+
+  .member-section {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .member-box {
+    margin-bottom: 10px;
+  }
+
+  label {
+    margin-bottom: 5px;
+  }
+
+  input {
+    margin-bottom: 10px;
+  }
+
+  .additional-features {
+    margin-top: 20px;
+  }
+
+  #viewPlanButton {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    align-self: flex-start;
+  }
+
+  #viewPlanButton:hover {
+    background-color: #45a049;
+  }
+
+  #disclaimer {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  #members-container {
+    margin-top: 20px;
+  }
+
+  .btn-add-remove {
+    margin-top: 10px;
+  }
+</style>
+{% endblock style %}
+
+{% block body %}
+<body>
+  <header>
+    <h1>Health Insurance Application</h1>
+  </header>
+
+  <main>
+    <div>
+      <label>Select Members to Insure:</label>
+      <div>
+        <input type="checkbox" id="selfCheckbox"> Self
+        <input type="checkbox" id="spouseCheckbox"> Spouse
+        <input type="checkbox" id="childrenCheckbox"> Children
+        <input type="checkbox" id="parentsCheckbox"> Parents/In-laws
+      </div>
+    </div>
+
+    <div class="member-section">
+      <div id="selfSection" class="member-box">
+        <label for="selfAge">Self Age:</label>
+        <input type="number" id="selfAge" required>
+      </div>
+
+      <div id="spouseSection" class="member-box">
+        <label for="spouseAge">Spouse Age:</label>
+        <input type="number" id="spouseAge" required>
+      </div>
+
+      <div id="childrenSection" class="member-box">
+        <label for="children">Number of Children:</label>
+        <input type="number" id="children" required>
+      </div>
+
+      <div id="parentsSection" class="member-box">
+        <label for="numParents">Number of Parents/In-laws:</label>
+        <input type="number" id="numParents" required>
+        
+        <div id="parentsAgeSection"></div>
+      </div>
+    </div>
+
+    <div id="members-container" class="additional-features"></div>
+
+    <button id="addMember" class="btn btn-primary btn-add-remove" onclick="addMember()">Add Member</button>
+    <button id="removeMember" class="btn btn-danger btn-add-remove" onclick="removeMember()">Remove Member</button>
+
+    <div class="additional-features">
+      <div>
+        <label for="preExistingDiseases">Pre-existing Diseases:</label>
+        <input type="checkbox" id="preExistingDiseases">
+      </div>
+
+      <div>
+        <label for="pincode">Pincode:</label>
+        <input type="text" id="pincode" required>
+      </div>
+
+      <button id="viewPlanButton" onclick="viewPlanDetails()">VIEW PLAN DETAILS</button>
+    </div>
+  </main>
+
+  <footer>
+    <div id="disclaimer">
+      <p>This information is confidential and will not be shared with any third parties.</p>
+    </div>
+  </footer>
+
+  <script>
+    function viewPlanDetails() {
+      // Implement logic to display plan details
+      alert("Viewing Plan Details");
+    }
+
+    document.getElementById('numParents').addEventListener('input', function () {
+      const numParents = parseInt(document.getElementById('numParents').value);
+      const parentsAgeSection = document.getElementById('parentsAgeSection');
+      parentsAgeSection.innerHTML = '';
+
+      for (let i = 1; i <= numParents; i++) {
+        const label = document.createElement('label');
+        label.textContent = `Age of Parent/In-law ${i}:`;
+
+        const input = document.createElement('input');
+        input.type = 'number';
+        input.id = `parentAge${i}`;
+        input.required = true;
+
+        parentsAgeSection.appendChild(label);
+        parentsAgeSection.appendChild(input);
+        parentsAgeSection.appendChild(document.createElement('br'));
+      }
+    });
+
+    document.getElementById('selfSection').style.display = 'none';
+    document.getElementById('spouseSection').style.display = 'none';
+    document.getElementById('childrenSection').style.display = 'none';
+    document.getElementById('parentsSection').style.display = 'none';
+
+    document.getElementById('selfCheckbox').addEventListener('change', function () {
+      document.getElementById('selfSection').style.display = this.checked ? 'block' : 'none';
+    });
+
+    document.getElementById('spouseCheckbox').addEventListener('change', function () {
+      document.getElementById('spouseSection').style.display = this.checked ? 'block' : 'none';
+    });
+
+    document.getElementById('childrenCheckbox').addEventListener('change', function () {
+      document.getElementById('childrenSection').style.display = this.checked ? 'block' : 'none';
+    });
+
+    document.getElementById('parentsCheckbox').addEventListener('change', function () {
+      document.getElementById('parentsSection').style.display = this.checked ? 'block' : 'none';
+    });
+
+    // Validation for date of birth not being current date or exceeding current date
+    document.getElementById('selfAge').addEventListener('input', function () {
+      validateDateOfBirth(this);
+    });
+
+    document.getElementById('spouseAge').addEventListener('input', function () {
+      validateDateOfBirth(this);
+    });
+
+    document.getElementById('children').addEventListener('input', function () {
+      validateDateOfBirth(this);
+    });
+
+    document.getElementById('numParents').addEventListener('input', function () {
+      validateDateOfBirth(this);
+    });
+
+    function validateDateOfBirth(inputElement) {
+      const currentDate = new Date();
+      const selectedDate = new Date(inputElement.value);
+      
+      if (selectedDate >= currentDate) {
+        alert("Date of birth must be before the current date.");
+        inputElement.value = ''; // Clear the input field
+      }
+    }
+
+    // Add member dynamic fields
+    let memberId = 1;
+
+    function addMember() {
+      const membersContainer = document.getElementById('members-container');
+      const memberDiv = document.createElement('div');
+      memberDiv.classList.add('member-box');
+
+      const label = document.createElement('label');
+      label.textContent = `Member ${memberId} Age:`;
+
+      const input = document.createElement('input');
+      input.type = 'number';
+      input.id = `memberAge${memberId}`;
+      input.required = true;
+
+      memberDiv.appendChild(label);
+      memberDiv.appendChild(input);
+
+      membersContainer.appendChild(memberDiv);
+
+      memberId++;
+    }
+
+    function removeMember() {
+      const membersContainer = document.getElementById('members-container');
+      if (membersContainer.lastElementChild) {
+        membersContainer.removeChild(membersContainer.lastElementChild);
+        memberId--;
+      }
+    }
+  </script>
+</body>
+{% endblock body %}

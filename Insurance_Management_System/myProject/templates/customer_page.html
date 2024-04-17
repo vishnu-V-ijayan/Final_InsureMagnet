@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Insurance Management System</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e0f2f7; /* Updated background color */
+            color: #333; /* Default text color */
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(to right, #ffffff, #b3e0ff);
+            color: #333;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .header a {
+            color: #333;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 16px;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .header a:hover {
+            color: #0066cc;
+        }
+
+        #profile-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-left: auto;
+        }
+
+        #profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .container {
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: #333;
+        }
+
+        img {
+            width: 100px;
+            height: 100px;
+            border-radius: 15%; /* Adjusted border-radius */
+            margin-top: 20px;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        img:hover {
+            transform: rotate(360deg);
+        }
+
+        #profile-container {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        #image-slider {
+            width: 300%;
+            display: flex;
+            transition: transform 1s ease-in-out;
+        }
+
+        #image-slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px; /* Adjusted border-radius */
+        }
+
+        #popular-policies {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .policy {
+            width: 30%;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Added shadow properties */
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .policy:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .policy1 {
+            background-image: url('policy-type1-image.jpeg');
+        }
+
+        .policy2 {
+            background-image: url('policy-type2-image.jpeg');
+        }
+
+        .policy3 {
+            background-image: url('policy-type3-image.jpeg');
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Health Insurance System</h1>
+        <a href="{% url 'view_policies' %}">View Policies</a>
+        <a href="#apply-policy">Apply for New Policy</a>
+        <a href="#renew-policy">Renew Policy</a>
+        <a href="#initiate-claim">Initiate Claim</a>
+        <a href="#update-profile">Update Profile</a>
+        <div id="profile-avatar">
+            <img src="avatar-placeholder.jpg" alt="Profile Avatar">
+        </div>
+        <a href="#logout">Logout</a>
+    </div>
+
+    <div class="container">
+        <p>Welcome to our platform where you can manage your health insurance easily.</p>
+        <button onclick="window.location.href='#policy-details'">Get Started</button>
+    </div>
+
+    <div id="profile-container">
+        <div id="image-slider">
+            <img src="image01.jpg" alt="Image 1">
+            <img src="image02.jpeg" alt="Image 2">
+            <img src="image03.jpeg" alt="Image 3">
+        </div>
+    </div>
+
+    <div id="popular-policies">
+        <div class="policy policy1">
+            <h2>Policy Type 1</h2>
+            <p>Description of Policy Type 1. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+
+        <div class="policy policy2">
+            <h2>Policy Type 2</h2>
+            <p>Description of Policy Type 2. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+
+        <div class="policy policy3">
+            <h2>Policy Type 3</h2>
+            <p>Description of Policy Type 3. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+    </div>
+
+    <!-- ... (Existing code) -->
+
+    <script>
+        const imageSlider = document.getElementById("image-slider");
+
+        function startImageSlider() {
+            setInterval(() => {
+                imageSlider.style.transform = `translateX(-${getImageWidth()}px)`;
+            }, 3000);
+        }
+
+        function getImageWidth() {
+            return document.querySelector("#profile-container").offsetWidth;
+        }
+
+        startImageSlider();
+    </script>
+
+</body>
+
+</html>

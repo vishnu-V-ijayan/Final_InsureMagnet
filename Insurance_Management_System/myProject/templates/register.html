@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Registration</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            margin-top:100px;
+            animation: slideIn 0.5s ease-out forwards;
+        }
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #5cb85c;
+            color: white;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        .is-invalid {
+            border-color: #dc3545;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+            display: none;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        input:focus {
+            outline: none;
+            border-color: #5cb85c;
+            box-shadow: 0 0 0 2px rgba(92, 184, 92, 0.25);
+        }
+        /* Ensuring the heading is clearly visible */
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333; /* Making text color explicit */
+            font-size: 24px; /* Adjust size as needed */
+        }
+    </style>
+</head>
+<body>
+    <form method="post" {% url "register" %} enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2>Staff Registration</h2>
+        <input type="text" id="first_name" name="first_name" placeholder="First Name" required>
+        <div class="error-message" id="first_name_error"></div>
+        
+        <input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
+        <div class="error-message" id="last_name_error"></div>
+        
+        <input type="email" id="email" name="email" placeholder="Email" required>
+        <div class="error-message" id="email_error"></div>
+        
+        <input type="text" id="phone" name="phone" placeholder="Phone" required>
+<div class="error-message" id="phone_error"></div>
+
+        
+        <input type="text" id="address" name="address" placeholder="Address" required>
+        <div class="error-message" id="address_error"></div>
+        
+        <input type="text" name="place" placeholder="Place" required>
+        <input type="text" name="pin" placeholder="PIN" required>
+        <input type="text" name="district" placeholder="District" required>
+        <input type="text" name="state" placeholder="State" required>
+        <input type="date" name="dob" placeholder="Date of Birth" required>
+        <input type="file" id="profile_picture" name="photo" placeholder="Photo">
+        <div class="error-message" id="profile_picture_error"></div>
+        
+        <input type="password" id="password" name="password" placeholder="Password" oninput="validatePassword()" required>
+        <div class="error-message" id="password_error"></div>
+        
+        <!-- Confirm Password Field -->
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" oninput="validateConfirmPassword()" required>
+        <div class="error-message" id="confirm_password_error"></div>
+        
+
+        <button type="submit">Register</button>
+    </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Validation for First Name - only alphabets, no spaces
+            function validateFirstName() {
+                const firstName = document.getElementById("first_name");
+                const firstNameError = document.getElementById("first_name_error");
+                if (!/^[A-Za-z]+$/.test(firstName.value)) {
+                    firstNameError.textContent = "First name must contain only alphabets without spaces.";
+                    firstNameError.style.display = "block";
+                    return false;
+                } else {
+                    firstNameError.style.display = "none";
+                }
+                return true;
+            }
+ 
+            // Validation for Last Name - only alphabets, no spaces
+            function validateLastName() {
+                const lastName = document.getElementById("last_name");
+                const lastNameError = document.getElementById("last_name_error");
+                if (!/^[A-Za-z]+$/.test(lastName.value)) {
+                    lastNameError.textContent = "Last name must contain only alphabets without spaces.";
+                    lastNameError.style.display = "block";
+                    return false;
+                } else {
+                    lastNameError.style.display = "none";
+                }
+                return true;
+            }
+        
+            // Validation for Address - should not be only numbers
+            function validateAddress() {
+                const address = document.getElementById("address");
+                const addressError = document.getElementById("address_error");
+                if (/^\d+$/.test(address.value)) {
+                    addressError.textContent = "Address cannot be just numbers.";
+                    addressError.style.display = "block";
+                    return false;
+                } else {
+                    addressError.style.display = "none";
+                }
+                return true;
+            }
+        
+            // Validation for Email - must be a valid email format
+            function validateEmail() {
+                const email = document.getElementById("email");
+                const emailError = document.getElementById("email_error");
+                // Simple regex for basic email validation
+                const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+                if (!regex.test(email.value.trim())) {
+                    emailError.textContent = "Please enter a valid email address.";
+                    emailError.style.display = "block";
+                    return false;
+                } else {
+                    emailError.style.display = "none";
+                }
+                return true;
+            }
+        
+            // Add event listeners for on-type validation
+            document.getElementById("first_name").addEventListener("input", validateFirstName);
+            document.getElementById("last_name").addEventListener("input", validateLastName);
+            document.getElementById("address").addEventListener("input", validateAddress);
+            document.getElementById("email").addEventListener("input", validateEmail);
+        
+            // Form submission handler
+            const form = document.getElementById("signup-form");
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+        
+                // Trigger validations
+                const isFirstNameValid = validateFirstName();
+                const isLastNameValid = validateLastName();
+                const isAddressValid = validateAddress();
+                const isEmailValid = validateEmail();
+        
+                // Check if all validations passed
+                if (isFirstNameValid && isLastNameValid && isAddressValid && isEmailValid) {
+                    console.log("Form is valid. Submitting...");
+                    // form.submit(); // Uncomment this to submit the form when validation passes
+                } else {
+                    console.log("Validation failed. Form not submitted.");
+                }
+            });
+        });
+
+// Validation for Phone - must be digits and 10 characters long
+function validatePhone() {
+    const phone = document.getElementById("phone");
+    const phoneError = document.getElementById("phone_error");
+    const phoneRegex = /^\d{10}$/; // Adjust regex according to your needs
+
+    if (!phoneRegex.test(phone.value)) {
+        phoneError.textContent = "Invalid phone number. Must be 10 digits.";
+        phoneError.style.display = "block";
+        return false;
+    } else {
+        phoneError.style.display = "none";
+    }
+    return true;
+}
+
+// Event listener for phone field input
+document.getElementById("phone").addEventListener("input", validatePhone);
+
+// Update the form submission handler to include phone validation
+form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // Existing validation triggers...
+    const isPhoneValid = validatePhone();
+
+    // Updated check including the new validation
+    if (/* other validations */ isPhoneValid /* and others */) {
+        console.log("Form is valid. Submitting...");
+        // form.submit(); // Uncomment to submit the form when validation passes
+    } else {
+        console.log("Validation failed. Form not submitted.");
+    }
+});
+
+function validatePassword() {
+    const password = document.getElementById('password');
+    const passwordError = document.getElementById('password_error');
+    // Regular expression for the password criteria
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (!regex.test(password.value)) {
+        passwordError.textContent = 'Password must contain at least one uppercase letter, one lowercase letter, one digit, one special character and be at least 8 characters long.';
+        passwordError.style.display = 'block';
+        password.classList.add('is-invalid');
+        return false;
+    } else {
+        passwordError.style.display = 'none';
+        password.classList.remove('is-invalid');
+    }
+    return true;
+}
+
+// Validation for Confirm Password - must match the Password
+function validateConfirmPassword() {
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm_password');
+    const confirmPasswordError = document.getElementById('confirm_password_error');
+
+    if (confirmPassword.value !== password) {
+        confirmPasswordError.textContent = 'Passwords do not match.';
+        confirmPasswordError.style.display = 'block';
+        confirmPassword.classList.add('is-invalid');
+        return false;
+    } else {
+        confirmPasswordError.style.display = 'none';
+        confirmPassword.classList.remove('is-invalid');
+    }
+    return true;
+}
+
+// Event listeners for password and confirm password input
+document.getElementById("password").addEventListener("input", validatePassword);
+document.getElementById("confirm_password").addEventListener("input", validateConfirmPassword);
+
+// Update the form submission handler to include password validations
+document.getElementById("signup-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // Trigger existing validations...
+    const isFirstNameValid = validateFirstName();
+    const isLastNameValid = validateLastName();
+    const isAddressValid = validateAddress();
+    const isEmailValid = validateEmail();
+    const isPhoneValid = validatePhone(); // Make sure this is defined and included in your script
+
+    // New password validations
+    const isPasswordValid = validatePassword();
+    const isConfirmPasswordValid = validateConfirmPassword();
+
+    // Updated check including the new validations
+    if (isFirstNameValid && isLastNameValid && isAddressValid && isEmailValid && isPhoneValid && isPasswordValid && isConfirmPasswordValid) {
+        console.log("Form is valid. Submitting...");
+         form.submit(); // Uncomment to submit the form when validation passes
+    } else {
+        console.log("Validation failed. Form not submitted.");
+    }
+});
+        
+</script>
+       
+</body>
+</html>

@@ -1,0 +1,112 @@
+{% extends 'adminbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Staff Registration</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+    body { font-family: Arial, sans-serif; }
+    .container { display: flex; justify-content: space-between; padding: 20px; }
+    .form-section, .list-section { flex: 1; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    input[type="text"], input[type="date"], input[type="file"], select { width: 100%; padding: 8px; margin-top: 5px; }
+    label { font-weight: bold; }
+    .button-container input { width: auto; padding: 8px 16px; margin-top: 10px; }
+</style>
+<script>
+    function validateForm() {
+        // Example validation: Ensure first name is entered
+        var firstName = document.forms["staffForm"]["first_name"].value;
+        if (firstName == "") {
+            alert("First name must be filled out");
+            return false;
+        }
+        return true;
+    }
+</script>
+</head>
+<body>
+<div class="container">
+    <div class="form-section">
+        <h2>Staff Registration</h2>
+        <form name="staffForm" action="staffreg2" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" required>
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" required>
+            <label for="address">House Name:</label>
+            <input type="text" id="address" name="address">
+            <label for="place">Place:</label>
+            <input type="text" id="place" name="place">
+            <label for="pin">Pin:</label>
+            <input type="text" id="pin" name="pin">
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" name="phone">
+            <label for="district">District:</label>
+            <input type="text" id="district" name="district">
+            <label for="state">State:</label>
+            <select id="state" name="state">
+                <option value="Kerala">Kerala</option>
+                <option value="Tamilnadu">Tamilnadu</option>
+                <option value="Karnataka">Karnataka</option>
+                <option value="Andrapradesh">Andrapradesh</option>
+                <!-- Add other states as needed -->
+            </select>
+            <label for="dob">Date Of Birth:</label>
+            <input type="date" id="dob" name="dob">
+            <label for="photo">Staff Photo:</label>
+            <input type="file" id="photo" name="file">
+            <label for="office_id">Office ID:</label>
+            <select id="office_id" name="office_id">
+                {% for office in l %}
+                <option value="{{ office.officeid }}">{{ office.place }}</option>
+                {% endfor %}
+            </select>
+            <div class="button-container">
+                <input type="submit" value="Submit">
+                <input type="reset" value="Reset">
+            </div>
+        </form>
+    </div>
+    <div class="list-section">
+        <h2>Office List</h2>
+        {% if records %}
+        <table>
+            <tr>
+                <th>Office ID</th>
+                <th>Address</th>
+                <th>Place</th>
+                <th>Location</th>
+                <th>Pin</th>
+                <th>Phone</th>
+                <th>District</th>
+                <th>State</th>
+            </tr>
+            {% for record in records %}
+            <tr>
+                <td>{{ record.officeid }}</td>
+                <td>{{ record.address }}</td>
+                <td>{{ record.place }}</td>
+                <td>{{ record.location }}</td>
+                <td>{{ record.pin }}</td>
+                <td>{{ record.phone }}</td>
+                <td>{{ record.district }}</td>
+                <td>{{ record.state }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No office registered...</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
+{% endblock content %}

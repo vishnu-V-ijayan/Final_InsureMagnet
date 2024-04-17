@@ -1,0 +1,197 @@
+<!-- view_policies.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Insurance Application</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #008080;
+            color: #fff;
+            text-align: center;
+            padding: 1em;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        .member-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .member-box {
+            margin-bottom: 10px;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input {
+            margin-bottom: 10px;
+        }
+
+        #parentsAgeSection {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .additional-features {
+            margin-top: 20px;
+        }
+
+        #viewPlanButton {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            align-self: flex-start;
+        }
+
+        #viewPlanButton:hover {
+            background-color: #45a049;
+        }
+
+        #disclaimer {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Health Insurance Application</h1>
+    </header>
+
+    <main>
+        <form method="post" action="{% url 'policy_list' %}">
+            {% csrf_token %}
+            <label>Select Members to Insure:</label>
+            <div>
+                <input type="checkbox" name="selfCheckbox" id="selfCheckbox"> Self
+                <input type="checkbox" name="spouseCheckbox" id="spouseCheckbox"> Spouse
+                <input type="checkbox" name="childrenCheckbox" id="childrenCheckbox"> Children
+                <input type="checkbox" name="parentsCheckbox" id="parentsCheckbox"> Parents/In-laws
+            </div>
+
+            <div class="member-section">
+                <div id="selfSection" class="member-box">
+                    <label for="selfAge">Self Age:</label>
+                    <input type="number" name="selfAge" id="selfAge">
+                </div>
+
+                <div id="spouseSection" class="member-box">
+                    <label for="spouseAge">Spouse Age:</label>
+                    <input type="number" name="spouseAge" id="spouseAge">
+                </div>
+
+                <div id="childrenSection" class="member-box">
+                    <label for="children">Number of Children:</label>
+                    <input type="number" name="children" id="children">
+                </div>
+
+                <div id="parentsSection" class="member-box">
+                    <label for="numParents">Number of Parents/In-laws:</label>
+                    <input type="number" name="numParents" id="numParents">
+                    
+                    <div id="parentsAgeSection"></div>
+                </div>
+            </div>
+
+            <div class="additional-features">
+                <div>
+                    <label for="preExistingDiseases">Pre-existing Diseases:</label>
+                    <input type="checkbox" name="preExistingDiseases" id="preExistingDiseases">
+                </div>
+
+                <div>
+                    <label for="pincode">Pincode:</label>
+                    <input type="text" name="pincode" id="pincode">
+                </div>
+
+                <button type="submit" id="viewPlanButton">VIEW PLAN DETAILS</button>
+            </div>
+        </form>
+    </main>
+
+    <footer>
+        <div id="disclaimer">
+            <p>This information is confidential and will not be shared with any third parties.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('numParents').addEventListener('input', function () {
+            const numParents = parseInt(document.getElementById('numParents').value);
+            const parentsAgeSection = document.getElementById('parentsAgeSection');
+            parentsAgeSection.innerHTML = '';
+
+            for (let i = 1; i <= numParents; i++) {
+                const label = document.createElement('label');
+                label.textContent = `Age of Parent/In-law ${i}:`;
+
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.name = `parentAge${i}`;
+                input.id = `parentAge${i}`;
+
+                parentsAgeSection.appendChild(label);
+                parentsAgeSection.appendChild(input);
+                parentsAgeSection.appendChild(document.createElement('br'));
+            }
+        });
+
+        document.getElementById('selfSection').style.display = 'none';
+        document.getElementById('spouseSection').style.display = 'none';
+        document.getElementById('childrenSection').style.display = 'none';
+        document.getElementById('parentsSection').style.display = 'none';
+
+        document.getElementById('selfCheckbox').addEventListener('change', function () {
+            document.getElementById('selfSection').style.display = this.checked ? 'block' : 'none';
+        });
+
+        document.getElementById('spouseCheckbox').addEventListener('change', function () {
+            document.getElementById('spouseSection').style.display = this.checked ? 'block' : 'none';
+        });
+
+        document.getElementById('childrenCheckbox').addEventListener('change', function () {
+            document.getElementById('childrenSection').style.display = this.checked ? 'block' : 'none';
+        });
+
+        document.getElementById('parentsCheckbox').addEventListener('change', function () {
+            document.getElementById('parentsSection').style.display = this.checked ? 'block' : 'none';
+        });
+    </script>
+</body>
+</html>

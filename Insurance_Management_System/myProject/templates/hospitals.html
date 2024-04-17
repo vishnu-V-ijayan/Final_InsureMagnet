@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load static  %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Hospital Insurance Data</title>
+</head>
+<body>
+    <!-- Main Content Section (Dashboard) -->
+    <main>
+        {% block body %}
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Logo</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col">Category</th>
+                <th scope="col">Address</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for each_hospital in all_hospitals %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td><img src="{{ each_hospital.logo.url }}" class="img-fluid" width="150" height="150"></td>
+
+                    <td>{{ each_hospital.name }}</td>
+                    <td>
+                        {% for each_user in all_users %}
+                            {% if each_user.username == each_hospital.user.username %}
+                                {{ each_user.email }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{ each_hospital.phone }}</td>
+                    <td>{{ each_hospital.category }}</td>
+                    <td>{{ each_hospital.address }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endblock body %}
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.dropdown-toggle').dropdown();
+        });
+    </script>
+</body>
+</html>
+
+
+{% comment %} 
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Hospital Insurance Data</title>
+    <style>
+        .approve-btn, .reject-btn, .activate-btn, .deactivate-btn {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Content Section (Dashboard) -->
+    <main>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Logo</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                    <th scope="col">Control</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for each_hospital in all_hospitals %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td><img src="{{ each_hospital.logo.url }}" class="img-fluid" width="150" height="150"></td>
+                    <td>{{ each_hospital.name }}</td>
+                    <td>{{ each_hospital.user.email }}</td>
+                    <td>{{ each_hospital.phone }}</td>
+                    <td>{{ each_hospital.category }}</td>
+                    <td>{{ each_hospital.address }}</td>
+                    <td id="{{ each_hospital.id }}-status">
+                        {% if each_hospital.approval_status == 'A' %}
+                            <span class="approve-btn">Approved</span>
+                        {% elif each_hospital.approval_status == 'P' %}
+                            <span class="reject-btn">Pending</span>
+                        {% else %}
+                            <span class="reject-btn">Rejected</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <button onclick="handleAction('{{ each_hospital.id }}', 'approve')">
+                            Approve
+                        </button>
+                        <button onclick="handleAction('{{ each_hospital.id }}', 'reject')">
+                            Reject
+                        </button>
+                    </td>
+                    <td>
+                        <button onclick="handleAction('{{ each_hospital.id }}', 'activate')">
+                            Activate
+                        </button>
+                        <button onclick="handleAction('{{ each_hospital.id }}', 'deactivate')">
+                            Deactivate
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function handleAction(hospitalId, action) {
+            // Implement logic to update the status in the backend (via AJAX or Django view)
+            // ...
+
+            // Update the status field based on the action
+            const statusCell = $(`#${hospitalId}-status`);
+
+            if (action === 'approve') {
+                statusCell.html('<span class="approve-btn">Approved</span>');
+            } else if (action === 'reject') {
+                statusCell.html('<span class="reject-btn">Rejected</span>');
+            } else if (action === 'activate') {
+                statusCell.html('<span class="activate-btn">Activated</span>');
+            } else if (action === 'deactivate') {
+                statusCell.html('<span class="deactivate-btn">Deactivated</span>');
+            }
+        }
+    </script>
+</body>
+</html>
+{% endblock %} {% endcomment %}
+

@@ -1,0 +1,25 @@
+{% extends 'adminbase.html' %}
+{% load static %}  <!-- Ensure you have loaded the necessary tags if you need them. -->
+
+{% block content %}
+<h1>Registered Offices</h1>
+<div>
+    {% for office in var %}
+    <div>
+        <h2>Office Details for {{ office.place }}</h2>
+        <p><strong>Office ID:</strong> {{ office.officeid }}</p>
+        <p><strong>Address:</strong> {{ office.address }}</p>
+        <p><strong>Place:</strong> {{ office.place }}</p>
+        <p><strong>Location:</strong> {{ office.location }}</p>
+        <p><strong>PIN:</strong> {{ office.pin }}</p>
+        <p><strong>Phone:</strong> {{ office.phone }}</p>
+        <p><strong>District:</strong> {{ office.district }}</p>
+        <p><strong>State:</strong> {{ office.state }}</p>
+        <p><strong>Registration Date:</strong> {{ office.regdate|date:"Y-m-d" }}</p>
+    </div>
+    <hr>
+    {% empty %}
+    <p>No offices have been registered yet.</p>
+    {% endfor %}
+</div>
+{% endblock content %}

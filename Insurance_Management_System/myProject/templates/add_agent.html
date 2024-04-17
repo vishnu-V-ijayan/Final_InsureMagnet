@@ -1,0 +1,93 @@
+{% extends "staff_home.html" %}
+
+{% block style %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    form {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+        animation: slideIn 0.5s ease-out forwards;
+    }
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    input, select, button {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box; /* Added to ensure padding does not affect overall width */
+        transition: box-shadow 0.3s ease-in-out; /* Transition for shadow */
+    }
+    input:focus, select:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px #c8e6c9; /* Green shadow */
+    }
+    button {
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s; /* Updated transition for hover effect */
+    }
+    button:hover {
+        background-color: #0056b3;
+        transform: scale(1.05); /* Scale effect on hover */
+    }
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+<div style="width: 100%; display: flex; justify-content: center;"> <!-- Centering wrapper -->
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <h2>Add Agent</h2> <!-- Added heading for clarity -->
+        <!-- Fields for User model -->
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="text" name="name" placeholder="Name" required>
+
+        <!-- Fields for Agent model -->
+        <input type="text" name="address" placeholder="Address" required>
+        <input type="text" name="place" placeholder="Place" required>
+        <input type="text" name="location" placeholder="Location" required>
+        <input type="text" name="pin" placeholder="PIN" required>
+        <input type="text" name="phone" placeholder="Phone" required>
+        <select name="gender" required>
+            <option value="">Select Gender</option> <!-- Added placeholder option -->
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+            <option value="O">Other</option>
+        </select>
+        <input type="text" name="qualification" placeholder="Qualification" required>
+        <input type="text" name="aadhar" placeholder="Aadhar" required>
+        <input type="file" name="photo">
+        <input type="date" name="registration_date" placeholder="Registration Date" required>
+
+        <button type="submit">Add Agent</button>
+    </form>
+</div>
+{% endblock body %}

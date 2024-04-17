@@ -1,0 +1,108 @@
+{% extends 'adminbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vehicle Plan Registration</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding: 0 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Vehicle Plan Registration</h2>
+                <form name="form1" method="post" action="{% url 'vehicle_plan_registration' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="t1">Premium Type</label>
+                        <select name="t1" id="t1" class="form-control">
+                            <option>Full Insured</option>
+                            <option>Third Party</option>
+                            <option>Bumper To Bumper</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="t2">Premium Percentage</label>
+                        <input name="t2" type="text" id="t2" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="t3">Specifications & Conditions</label>
+                        <textarea name="t3" cols="60" id="t3" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="t4">Depreciation %</label>
+                        <input name="t4" type="text" id="t4" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="reset" class="btn btn-secondary">Reset</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <h2>Existing Plan</h2>
+                {% if records %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Vehicle Plan ID</th>
+                                <th>Plan Type</th>
+                                <th>Plan Percentage</th>
+                                <th>Specification</th>
+                                <th>Depreciation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for record in records %}
+                            <tr>
+                                <td>{{ record.id }}</td>
+                                <td>{{ record.PType }}</td>
+                                <td>{{ record.Ppercentage }}%</td>
+                                <td>{{ record.sp }}</td>
+                                <td>{{ record.depreciation }}%</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p><strong>No Plan Registered...</strong></p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('form1').onsubmit = function(event) {
+            if (!validateForm()) {
+                event.preventDefault();
+            }
+        };
+
+        function validateForm() {
+            var inputs = ['t1', 't2', 't3', 't4'];
+            var valid = true;
+            inputs.forEach(function(input) {
+                var value = document.getElementById(input).value;
+                if (!value) {
+                    alert('Please fill out the ' + document.querySelector('label[for="' + input + '"]').innerText + ' field.');
+                    valid = false;
+                }
+            });
+            return valid;
+        }
+    </script>
+</body>
+</html>
+{% endblock content %}

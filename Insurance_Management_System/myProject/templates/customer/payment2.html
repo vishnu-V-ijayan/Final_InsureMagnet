@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <button id="pay-button">Proceed to Payment</button>
+
+    <script>
+        var options = {
+            "key": "{{ razorpay_merchant_key }}", // Insert the key ID generated from the Dashboard
+            "amount": "{{ razorpay_amount }}", // Amount is in currency subunits. Default currency is INR.
+            "currency": "{{ currency }}",
+            "name": "Acme Corporation",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": "{{ razorpay_order_id }}", // Pass the `id` obtained in the response of Step 1
+            "handler": function (response){
+                // Alerts to show the payment IDs, can be removed or replaced as needed
+                alert("Payment ID: " + response.razorpay_payment_id);
+                alert("Order ID: " + response.razorpay_order_id);
+                
+                // Perform operations upon successful payment here
+                
+                // Redirect to the success page
+                window.location.href = '{% url "history" %}';
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#F37254"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        document.getElementById('pay-button').onclick = function(e){
+            rzp1.open();
+            e.preventDefault();
+        }
+    </script>
+</body>
+</html>

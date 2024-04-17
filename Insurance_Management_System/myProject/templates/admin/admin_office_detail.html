@@ -1,0 +1,22 @@
+{% extends 'adminbase.html' %}
+
+{% load widget_tweaks %}  <!-- Load only necessary tags -->
+
+{% block title %}Office Details{% endblock %}
+
+{% block content %}
+    <h1>Office Registration Successful</h1>
+    <div>
+        <h2>Office Details</h2>
+        <p><strong>Address:</strong> {{ office.address }}</p>
+        <p><strong>Place:</strong> {{ office.place }}</p>
+        <p><strong>Location:</strong> {{ office.location }}</p>
+        <p><strong>PIN:</strong> {{ office.pin }}</p>
+        <p><strong>Phone:</strong> {{ office.phone }}</p>
+        <p><strong>District:</strong> {{ office.district }}</p>
+        <p><strong>State:</strong> {{ office.state }}</p>
+        <p><strong>Registration Date:</strong> {{ office.regdate|date:"Y-m-d" }}</p>
+    </div>
+    <a href="{% url 'register_office' %}">Register another office</a> | 
+    <a href="{% url 'view_office' %}">View all offices</a>
+{% endblock %}

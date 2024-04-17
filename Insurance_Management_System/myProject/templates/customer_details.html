@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Customer Details</title>
+    <style>
+        form {
+            width: 300px;
+            margin: auto;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Customer Details</h1>
+    <p><strong>Name:</strong> {{ customer.first_name }} {{ customer.last_name }}</p>
+    <p><strong>Phone:</strong> {{ customer.phone }}</p>
+    <p><strong>Address:</strong> {{ customer.address }}</p>
+    <!-- Display user information -->
+    <p><strong>Email:</strong> {{ customer.user.email }}</p>
+    <p><strong>Role:</strong> {{ customer.user.get_role_display }}</p>
+
+    <h2>Vehicle Plans</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Premium Type</th>
+                <th>Premium Percentage</th>
+                <th>Specifications and Conditions</th>
+                <th>Depreciation</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for plan in plans %}
+            <tr>
+                <td>{{ plan.PType }}</td>
+                <td>{{ plan.Ppercentage }}%</td>
+                <td>{{ plan.sp }}</td>
+                <td>{{ plan.depreciation }}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+ 
+</body>
+</html>

@@ -1,0 +1,498 @@
+{% comment %} {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Management System</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Reset some default styles */
+        body, h1, h2, h3, ul, li, p {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #005293;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            z-index: 1;
+        }
+
+        .user-dropdown:hover .user-dropdown-content {
+            display: block;
+        }
+
+        .user-dropdown-content a {
+            color: #000;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .user-dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        nav {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        nav button {
+            background-color: #005293;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .signin-button {
+            background-color: #005293;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .signin-button:hover {
+            background-color: #003366;
+        }
+
+        .signin-button i {
+            margin-right: 5px;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+            overflow: auto;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .dashboard-item {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Add additional styling as needed */
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav {
+                margin-top: 10px;
+                justify-content: center;
+            }
+
+            nav button, .signin-button {
+                margin: 5px;
+            }
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #0066cc; /* Change the footer color to blue */
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between; /* Distribute contents */
+            align-items: center;
+        }
+
+        footer div.contact {
+            flex: 1;
+            text-align: left;
+        }
+
+        footer div.quick-links {
+            flex: 1;
+            text-align: right; /* Move "Quick Links" to the right */
+        }
+
+        footer ul {
+            list-style: none;
+        }
+
+        footer ul li {
+            margin-bottom: 5px;
+        }
+
+
+
+        
+    {% block style %}
+
+    
+    
+    {% endblock style %}
+
+    </style>
+
+
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <!-- Insert your logo image here -->
+            <img src="{% static 'img/logo.png' %}" alt="InsureMagnet Logo">
+            <h1>InsureMagnet</h1>
+        </div>
+        <nav>
+            <a href="#">Hospitals</a>
+            <a href="#">Patients</a>
+            <a href="#">Insurance Companies</a>
+            <a href="#">Employees</a>
+            
+            
+           <!-- Log Out Dropdown -->
+
+           {% if request.user.is_authenticated %}
+           <a class="signin-button" href="{% url "handlelogout" %}"><i class="fas fa-sign-in-alt"></i> Log out</a>
+           {% else %}
+           <a class="signin-button" href="{% url "signup" %}"><i class="fas fa-sign-in-alt"></i> Sign up</a>
+           <a class="signin-button" href="{% url "handlelogin" %}"><i class="fas fa-sign-in-alt"></i> Sign In</a>
+           {% endif %}
+            <button id="support">Support</button>
+        </nav>
+    </header>
+
+    <!-- Main Content Section (Dashboard) -->
+    <main>
+     {% block body %}
+     
+     
+     {% endblock body %}
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div>
+            <p>Contact Us</p>
+            <p>Email: contact@insuremagnet.com</p>
+            <p>Phone: +1 (123) 456-7890</p>
+        </div>
+        <div>
+            <p>Quick Links</p>
+            <ul>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.dropdown-toggle').dropdown();
+    });
+</script>
+
+</body>
+</html> {% endcomment %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insurance Management System</title>
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Reset some default styles */
+        body, h1, h2, h3, ul, li, p {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Basic styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #0066cc; /* Change to blue color */
+            color: #fff; /* Font color to white */
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 20px; /* Add border radius */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .user-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            z-index: 1;
+        }
+
+        .user-dropdown:hover .user-dropdown-content {
+            display: block;
+        }
+
+        .user-dropdown-content a {
+            color: #000;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .user-dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        nav {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        nav button {
+            background-color: #005293;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .signin-button {
+            background-color: #005293;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .signin-button:hover {
+            background-color: #003366;
+        }
+
+        .signin-button i {
+            margin-right: 5px;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            background-color: #fff;
+            overflow: auto;
+        }
+
+        .dashboard-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .dashboard-item {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Add additional styling as needed */
+
+        /* Responsive design for smaller screens */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav {
+                margin-top: 10px;
+                justify-content: center;
+            }
+
+            nav button, .signin-button {
+                margin: 5px;
+            }
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #0066cc; /* Change the footer color to blue */
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between; /* Distribute contents */
+            align-items: center;
+        }
+
+        footer div.contact {
+            flex: 1;
+            text-align: left;
+        }
+
+        footer div.quick-links {
+            flex: 1;
+            text-align: right; /* Move "Quick Links" to the right */
+        }
+
+        footer ul {
+            list-style: none;
+        }
+
+        footer ul li {
+            margin-bottom: 5px;
+        }
+
+        {% block style %}
+        /* Your additional styles can go here */
+        {% endblock style %}
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="logo">
+            <!-- Insert your logo image here -->
+            <img src="{% static 'img/logo.png' %}" alt="InsureMagnet Logo">
+            <h1>InsureMagnet</h1>
+        </div>
+        <nav>
+            <a href="#">Hospitals</a>
+            <a href="#">Patients</a>
+            <a href="#">Insurance Companies</a>
+            <a href="#">Employees</a>
+
+            <!-- Log Out Dropdown -->
+
+            {% if request.user.is_authenticated %}
+            <a class="signin-button" href="{% url "handlelogout" %}"><i class="fas fa-sign-in-alt"></i> Log out</a>
+            {% else %}
+            <a class="signin-button" href="{% url "signup" %}"><i class="fas fa-sign-in-alt"></i> Sign up</a>
+            <a class="signin-button" href="{% url "handlelogin" %}"><i class="fas fa-sign-in-alt"></i> Sign In</a>
+            {% endif %}
+            <button id="support">Support</button>
+        </nav>
+    </header>
+
+    <!-- Main Content Section (Dashboard) -->
+    <main>
+        {% block body %}
+
+        <!-- Your main content goes here -->
+
+        {% endblock body %}
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <div>
+            <p>Contact Us</p>
+            <p>Email: contact@insuremagnet.com</p>
+            <p>Phone: +1 (123) 456-7890</p>
+        </div>
+        <div>
+            <p>Quick Links</p>
+            <ul>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.dropdown-toggle').dropdown();
+        });
+    </script>
+</body>
+</html>
+

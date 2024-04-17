@@ -1,0 +1,104 @@
+<!-- policy_list.html -->
+{% extends "policy_premium/base.html" %}
+
+{% block style %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    header {
+        background-color: #008080;
+        color: #fff;
+        text-align: center;
+        padding: 1em;
+    }
+
+    main {
+        max-width: 800px;
+        margin: 20px auto;
+    }
+
+    .policy-container {
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 20px;
+    }
+
+    .policy-name {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .policy-description {
+        margin-bottom: 10px;
+    }
+
+    .coverage-details {
+        margin-bottom: 10px;
+    }
+
+    .premium-amount {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .payment-interval {
+        margin-bottom: 10px;
+    }
+
+    .btn-buy-now {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .btn-buy-now:hover {
+        background-color: #45a049;
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+<body>
+    <header>
+        <h1>Health Insurance Application</h1>
+    </header>
+
+    <main>
+        {% for policy in policies %}
+        <div class="policy-container">
+            <div class="policy-name">{{ policy.policy_name }}</div>
+            <div class="policy-description">{{ policy.description }}</div>
+            <div class="coverage-details">Coverage: {{ policy.coverage_details }}</div>
+            <div class="premium-amount">Monthly Premium: ₹{{ policy.premium_amount }}</div>
+
+            <!-- Payment Interval Selection -->
+            <div class="payment-interval">
+                <label for="paymentInterval">Payment Interval:</label>
+                <select id="paymentInterval" name="payment_interval">
+                    <option value="monthly">Monthly</option>
+                    <option value="annually">Annually</option>
+                </select>
+            </div>
+
+            <form method="post" action="{% url 'personal_details' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-buy-now">BUY NOW</button>
+            </form>
+        </div>
+        {% endfor %}
+    </main>
+</body>
+{% endblock body %}

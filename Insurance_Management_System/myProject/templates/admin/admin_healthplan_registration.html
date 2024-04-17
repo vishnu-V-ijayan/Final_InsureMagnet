@@ -1,0 +1,114 @@
+{% extends 'adminbase.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+<title>Health Plan Registration</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<style>
+    body { font-family: Arial, sans-serif; }
+    .container { display: flex; justify-content: space-between; margin: 20px; }
+    .form-container, .records-container { padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; }
+    input[type="text"], select, textarea { width: 100%; padding: 8px; margin-top: 5px; border-radius: 4px; border: 1px solid #ccc; }
+    button { padding: 10px 20px; color: #fff; background-color: #007BFF; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background-color: #0056b3; }
+</style>
+<script>
+    function validateForm() {
+        // Basic JavaScript validation can be extended as per requirements
+        var yp = document.forms["form1"]["t2"].value;
+        if (isNaN(yp) || yp === "") {
+            alert("Yearly premium must be a numeric value.");
+            return false;
+        }
+        return true;
+    }
+</script>
+</head>
+<body>
+{% comment %} {% include "p22.htm" %} {% endcomment %}
+
+<div class="container">
+    <div class="form-container">
+        <strong>Health Plan Registration</strong>
+        <form name="form1" method="post" action="{% url 'health_plan_registration' %}" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <table>
+                <tr>
+                    <td>Plan Type</td>
+                    <td>
+                        <select name="t1" id="t1">
+                            <option>Single</option>
+                            <option>Two Members</option>
+                            <option>Three Members</option>
+                            <option>Four Members</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Yearly Premium</td>
+                    <td><input type="text" name="t2" id="t2"></td>
+                </tr>
+                <tr>
+                    <td>Increase Percentage</td>
+                    <td><input type="text" name="t3" id="t3"></td>
+                </tr>
+                <tr>
+                    <td>Maximum Amount</td>
+                    <td><input type="text" name="t4" id="t4"></td>
+                </tr>
+                <tr>
+                    <td>Specifications</td>
+                    <td><textarea name="t5" id="t5" cols="30" rows="4"></textarea></td>
+                </tr>
+                <tr>
+                    <td>Upto Age</td>
+                    <td><input type="text" name="t6" id="t6"></td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button type="submit" name="Submit">Submit</button>
+                        <button type="reset" name="Submit2">Reset</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <div class="records-container">
+        <strong>Existing Plan</strong>
+        {% if records %}
+        <table>
+            <tr>
+                <th>Health Plan ID</th>
+                <th>Plan Type</th>
+                <th>Yearly Premium</th>
+                <th>Increase Percentage</th>
+                <th>Maximum Amount</th>
+                <th>Specification</th>
+                <th>Upto Age</th>
+            </tr>
+            {% for record in records %}
+            <tr>
+                <td>{{ record.hpid }}</td>
+                <td>{{ record.ptype }}</td>
+                <td>{{ record.ypremium }}</td>
+                <td>{{ record.incper }}</td>
+                <td>{{ record.maxamt }}</td>
+                <td>{{ record.specification }}</td>
+                <td>{{ record.uptoage }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+        <p>No Plan Registered...</p>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>
+{% endblock content %}
